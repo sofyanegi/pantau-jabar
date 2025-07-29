@@ -15,19 +15,20 @@ export const authOptions: AuthOptions = {
         password: { label: 'Password', type: 'password', placeholder: '******' },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+        try {
+          if (!credentials?.email || !credentials?.password) return null;
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
-        });
+          const user = await prisma.user.findUnique({ where: { email: credentials.email } });
+          if (!user || !user.password) return null;
 
-        if (!user || !user.password) return null;
+          const hashed = await hashPassword(credentials.password);
+          if (user.password !== hashed) return null;
 
-        const hashed = hashPassword(credentials.password);
-        if (user.password !== hashed) return null;
-
-        const { password, ...userWithoutPassword } = user;
-        return userWithoutPassword;
+          const { password, ...userWithoutPassword } = user;
+          return userWithoutPassword;
+        } catch (error) {
+          return null;
+        }
       },
     }),
   ],
