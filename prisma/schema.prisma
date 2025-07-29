@@ -46,7 +46,7 @@ model Cctv {
   cityId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  city      City     @relation(fields: [cityId], references: [id])
+  city      City     @relation(fields: [cityId], references: [id], onDelete: Cascade)
 
   @@map("cctvs")
 }
