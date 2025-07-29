@@ -25,7 +25,10 @@ const authOptions: NextAuthOptions = {
           if (user.password !== hashed) return null;
 
           const { password, ...userWithoutPassword } = user;
-          return userWithoutPassword;
+          return {
+            ...userWithoutPassword,
+            role: user.role ? String(user.role) : 'USER',
+          };
         } catch (error) {
           return null;
         }
@@ -43,6 +46,7 @@ const authOptions: NextAuthOptions = {
         token.userId = user.id;
         token.name = user.name;
         token.email = user.email;
+        token.role = user.role ?? 'USER';
       }
       return token;
     },
@@ -51,6 +55,7 @@ const authOptions: NextAuthOptions = {
         session.user.id = token.userId;
         session.user.name = token.name;
         session.user.email = token.email;
+        session.user.role = token.role;
       }
       return session;
     },
@@ -58,4 +63,4 @@ const authOptions: NextAuthOptions = {
 };
 
 const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST, authOptions };
