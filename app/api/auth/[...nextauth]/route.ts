@@ -1,9 +1,9 @@
-import NextAuth, { AuthOptions } from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/libs/prisma';
 import hashPassword from '@/libs/hash';
 
-export const authOptions: AuthOptions = {
+const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/login',
   },
