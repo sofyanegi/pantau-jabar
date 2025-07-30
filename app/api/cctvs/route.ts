@@ -2,19 +2,45 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/libs/prisma';
 import { CCTVInput, CCTVSchema } from '@/types/cctv';
 import { validateWithZod, handleApiError, paginate } from '@/libs/apiHandler';
+import { Prisma } from '@/app/generated/prisma';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const page = parseInt(searchParams.get('page') || '');
-  const limit = parseInt(searchParams.get('limit') || '');
 
-  const cctvs = await prisma.cctv.findMany({ include: { city: true } });
+  const page = parseInt(searchParams.get('page') || '1');
+  const limit = parseInt(searchParams.get('limit') || '10');
+  const cityId = searchParams.get('cityId');
+  const query = searchParams.get('q')?.toLowerCase();
 
-  if (!page || !limit) {
-    return NextResponse.json(cctvs);
-  }
+  const skip = (page - 1) * limit;
 
-  return NextResponse.json(paginate(cctvs, page, limit));
+  const where: Prisma.CctvWhereInput = {
+    ...(cityId && { cityId }),
+    ...(query && {
+      OR: [{ id: { contains: query, mode: 'insensitive' } }, { name: { contains: query, mode: 'insensitive' } }],
+    }),
+  };
+
+  const [data, total] = await Promise.all([
+    prisma.cctv.findMany({
+      where,
+      include: { city: true },
+      skip,
+      take: limit,
+      orderBy: { name: 'asc' },
+    }),
+    prisma.cctv.count({ where }),
+  ]);
+
+  return NextResponse.json({
+    data,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  });
 }
 
 export async function POST(request: NextRequest) {
