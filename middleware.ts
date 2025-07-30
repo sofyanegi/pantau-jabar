@@ -3,8 +3,9 @@ import { withAuth } from 'next-auth/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
 const publicRoutes = ['/login', '/register', /^\/cctv\/[^\/]+$/];
-
 const authRoutes = ['/login', '/register'];
+
+const protectedApiRoutes = ['/api/cctvs', '/api/cities'];
 
 export async function customMidleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -14,7 +15,9 @@ export async function customMidleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  if (pathname.startsWith('/api/cctvs') && request.method !== 'GET') {
+  const isProtectedRoute = protectedApiRoutes.some((route) => pathname.startsWith(route));
+
+  if (isProtectedRoute && request.method !== 'GET') {
     if (!token || token.role !== 'ADMIN') {
       return NextResponse.json({ message: 'Unauthorized (middleware)' }, { status: 401 });
     }
@@ -29,9 +32,10 @@ export default withAuth(customMidleware, {
       const { pathname } = req.nextUrl;
       const method = req.method;
 
-      if (method === 'GET' && (pathname === '/api/cctvs' || /^\/api\/cctvs\/[^\/]+$/.test(pathname))) {
-        return true;
-      }
+      // GET tetap boleh untuk endpoint /api/cctvs dan /api/cities
+      const isPublicApiGet = method === 'GET' && (pathname.startsWith('/api/cctvs') || pathname.startsWith('/api/cities'));
+
+      if (isPublicApiGet) return true;
 
       for (const route of publicRoutes) {
         if (typeof route === 'string' && pathname === route) return true;
@@ -44,5 +48,5 @@ export default withAuth(customMidleware, {
 });
 
 export const config = {
-  matcher: ['/login', '/register', '/cctv/:path*', '/protected', '/api/cctvs/:path*'],
+  matcher: ['/login', '/register', '/cctv/:path*', '/protected', '/api/cctvs/:path*', '/api/cities/:path*'],
 };
