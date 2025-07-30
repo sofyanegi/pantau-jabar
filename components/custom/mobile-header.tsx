@@ -11,7 +11,7 @@ export default function MobileNav() {
     <header className="md:hidden bg-background/90 backdrop-blur-sm border-b p-4 flex justify-between items-center sticky top-0 z-50">
       <Link href="/" className="flex items-center gap-2">
         <Video className="h-6 w-6 text-primary" />
-        <span className="text-lg font-bold">PALAPA JABAR</span>
+        <span className="text-lg font-bold">PANTAU JABAR</span>
       </Link>
       <div className="flex items-center gap-2">
         {session?.user?.role === 'ADMIN' && (

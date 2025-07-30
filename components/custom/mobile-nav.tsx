@@ -13,7 +13,6 @@ export default function MobileNav() {
       <nav className="flex justify-around items-center h-16">
         {navItems.map((item) => {
           const Icon = item.icon;
-          // Logika untuk menentukan item aktif
           const isActive = item.href === '/' ? pathname === item.href : pathname.startsWith(item.href);
 
           return (

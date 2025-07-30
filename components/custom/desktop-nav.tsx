@@ -88,7 +88,6 @@ export default function DesktopNav() {
           <span className="text-xl font-bold text-foreground tracking-tight">PANTAU JABAR</span>
         </Link>
 
-        {/* Bagian Tengah: Link Navigasi Utama */}
         <div className="flex items-center gap-2 bg-secondary/50 p-1 rounded-lg">
           {navItems
             .filter((item) => item.name !== 'Home')
