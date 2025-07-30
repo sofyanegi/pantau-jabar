@@ -1,11 +1,5 @@
 import { z } from 'zod';
-
-export interface City {
-  id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import { City } from './city';
 
 export interface CCTV {
   id: string;
