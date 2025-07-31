@@ -51,23 +51,16 @@ function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          {session.user.role === 'ADMIN' && (
+        {session.user.role === 'ADMIN' && (
+          <DropdownMenuGroup>
             <DropdownMenuItem asChild>
-              <Link href="/admin/cctv" className="w-full cursor-pointer">
+              <Link href="/admin/cctvs" className="w-full cursor-pointer">
                 <LayoutDashboard className="mr-2 h-4 w-4 text-yellow-500" />
                 <span>Admin Panel</span>
               </Link>
             </DropdownMenuItem>
-          )}
-          {/* <DropdownMenuItem asChild>
-            <Link href="/profile" className="w-full cursor-pointer">
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
-            </Link>
-          </DropdownMenuItem> */}
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+          </DropdownMenuGroup>
+        )}
         <DropdownMenuItem onClick={() => signOut()} className="text-red-500 focus:text-red-500 focus:bg-red-500/10 cursor-pointer">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>

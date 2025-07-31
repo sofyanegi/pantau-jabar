@@ -15,7 +15,7 @@ export default function MobileNav() {
       </Link>
       <div className="flex items-center gap-2">
         {session?.user?.role === 'ADMIN' && (
-          <Link href="/admin/cctv" className="p-2 rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300">
+          <Link href="/admin/cctvs" className="p-2 rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300">
             <LayoutDashboard className="w-5 h-5" />
           </Link>
         )}
