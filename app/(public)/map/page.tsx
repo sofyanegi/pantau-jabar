@@ -1,3 +1,9 @@
+import MapSection from '@/components/map/map-section';
+
 export default function Page() {
-  return <div>Map Page</div>;
+  return (
+    <>
+      <MapSection />
+    </>
+  );
 }
