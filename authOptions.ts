@@ -65,7 +65,6 @@ export const authOptions: NextAuthOptions = {
       return !!user;
     },
     async jwt({ token, user }) {
-      // Saat pertama kali login
       if (user?.email) {
         const dbUser = await prisma.user.findUnique({ where: { email: user.email } });
         if (dbUser) {

@@ -41,7 +41,6 @@ export default function LoginPage() {
     },
   });
 
-  // Function to handle credentials form submission
   async function onCredentialsSubmit(values: z.infer<typeof formSchema>) {
     setIsCredentialsLoading(true);
     setServerError(null);
@@ -124,7 +123,6 @@ export default function LoginPage() {
             </form>
           </Form>
 
-          {/* Separator */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
@@ -134,7 +132,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Google Sign-In Button */}
           <LoginGoogle>Sign In</LoginGoogle>
         </CardContent>
         <CardFooter className="flex justify-center">

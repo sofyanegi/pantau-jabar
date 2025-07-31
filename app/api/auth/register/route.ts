@@ -32,7 +32,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Exclude password before returning user object
     const { password: _, ...userWithoutPassword } = user;
 
     return NextResponse.json({ user: userWithoutPassword }, { status: 201 });

@@ -35,7 +35,6 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     const { name } = validation.data as CityInput;
 
-    // Check if city exists
     const existingCity = await prisma.city.findUnique({
       where: { id },
     });
@@ -44,7 +43,6 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ message: 'Kota tidak ditemukan' }, { status: 404 });
     }
 
-    // Check if name already exists for another city
     const cityWithSameName = await prisma.city.findFirst({
       where: {
         name,
@@ -76,7 +74,6 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
   try {
     const id = (await params).id;
 
-    // Check if city exists
     const existingCity = await prisma.city.findUnique({
       where: { id },
       include: {
@@ -90,7 +87,6 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
       return NextResponse.json({ message: 'Kota tidak ditemukan' }, { status: 404 });
     }
 
-    // Check if city has associated CCTVs
     if (existingCity._count.cctvs > 0) {
       return NextResponse.json(
         {

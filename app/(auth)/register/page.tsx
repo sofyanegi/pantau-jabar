@@ -28,7 +28,7 @@ const formSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match.',
-    path: ['confirmPassword'], // Show error on the confirm password field
+    path: ['confirmPassword'],
   });
 
 export default function RegisterPage() {
@@ -36,7 +36,6 @@ export default function RegisterPage() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [isCredentialsLoading, setIsCredentialsLoading] = useState(false);
 
-  // Initialize React Hook Form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,7 +46,6 @@ export default function RegisterPage() {
     },
   });
 
-  // Function to handle credentials form submission
   async function onCredentialsSubmit(values: z.infer<typeof formSchema>) {
     setIsCredentialsLoading(true);
     setServerError(null);
@@ -66,7 +64,6 @@ export default function RegisterPage() {
       });
 
       if (res.ok) {
-        // Redirect to login page on successful registration
         router.push('/login');
       } else {
         const data = await res.json();
