@@ -31,7 +31,9 @@ export async function GET(request: NextRequest) {
     });
 
     if (!page || !limit) {
-      return NextResponse.json(cities);
+      return NextResponse.json({
+        data: cities,
+      });
     }
 
     return NextResponse.json(paginate(cities, page, limit));

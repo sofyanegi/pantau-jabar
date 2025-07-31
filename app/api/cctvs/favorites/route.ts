@@ -48,17 +48,11 @@ export async function POST(request: NextRequest) {
     });
 
     if (existingFavorite) {
-      await prisma.favorite.delete({
-        where: {
-          userId_cctvId: { userId, cctvId },
-        },
-      });
-      return NextResponse.json({ message: 'Favorite removed' });
+      await prisma.favorite.delete({ where: { userId_cctvId: { userId, cctvId } } });
+      return NextResponse.json({ success: true, status: 'removed favorites' }, { status: 200 });
     } else {
-      const newFavorite = await prisma.favorite.create({
-        data: { userId, cctvId },
-      });
-      return NextResponse.json(newFavorite, { status: 201 });
+      await prisma.favorite.create({ data: { userId, cctvId } });
+      return NextResponse.json({ success: true, status: 'added favorites' }, { status: 201 });
     }
   } catch (error) {
     console.error('Error toggling favorite:', error);

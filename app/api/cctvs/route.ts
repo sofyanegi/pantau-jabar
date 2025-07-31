@@ -1,17 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/libs/prisma';
 import { CCTVInput, CCTVSchema } from '@/types/cctv';
-import { validateWithZod, handleApiError, paginate } from '@/libs/apiHandler';
+import { validateWithZod, handleApiError } from '@/libs/apiHandler';
 import { Prisma } from '@/app/generated/prisma';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
 
-  const page = parseInt(searchParams.get('page') || '1');
-  const limit = parseInt(searchParams.get('limit') || '10');
+  const rawPage = searchParams.get('page');
+  const rawLimit = searchParams.get('limit');
   const cityId = searchParams.get('cityId');
   const query = searchParams.get('q')?.toLowerCase();
 
+  const isPagination = rawPage !== null && rawLimit !== null;
+
+  const page = parseInt(rawPage || '1', 10);
+  const limit = parseInt(rawLimit || '10', 10);
   const skip = (page - 1) * limit;
 
   const where: Prisma.CctvWhereInput = {
@@ -25,8 +29,8 @@ export async function GET(request: NextRequest) {
     prisma.cctv.findMany({
       where,
       include: { city: true },
-      skip,
-      take: limit,
+      ...(isPagination && { skip }),
+      ...(isPagination && { take: limit }),
       orderBy: { name: 'asc' },
     }),
     prisma.cctv.count({ where }),
@@ -34,12 +38,14 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({
     data,
-    pagination: {
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    },
+    pagination: isPagination
+      ? {
+          total,
+          page,
+          limit,
+          totalPages: Math.ceil(total / limit),
+        }
+      : null,
   });
 }
 
