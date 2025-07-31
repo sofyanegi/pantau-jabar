@@ -31,7 +31,7 @@ export default withAuth(customMiddleware, {
       const { pathname } = req.nextUrl;
       const method = req.method;
 
-      const isPublicApiGet = method === 'GET' && (pathname.startsWith('/api/cctvs') || pathname.startsWith('/api/cities'));
+      const isPublicApiGet = method === 'GET' && (pathname.startsWith('/api/cctvs') || pathname.startsWith('/api/cities') || pathname.startsWith('/api/users'));
 
       const isPublicPage = publicRoutes.some((route) => {
         if (typeof route === 'string') {
@@ -49,5 +49,5 @@ export default withAuth(customMiddleware, {
 });
 
 export const config = {
-  matcher: ['/login', '/register', '/cctv/:path*', '/favorites', '/api/cctvs/:path*', '/api/cities/:path*', '/protected', '/admin/:path*'],
+  matcher: ['/login', '/register', '/favorites', '/api/cctvs/:path*', '/api/cities/:path*', '/api/users/:path*', '/admin/:path*'],
 };
