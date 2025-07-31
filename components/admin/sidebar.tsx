@@ -16,6 +16,7 @@ const navLinks = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const isActive = (href: string) => pathname.startsWith(`/admin${href}`);
 
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -25,8 +26,8 @@ export function Sidebar() {
             <Tooltip key={link.href}>
               <TooltipTrigger asChild>
                 <Link
-                  href={`/admin/${link.href}`}
-                  className={cn('flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8', pathname.startsWith(link.href) ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground')}
+                  href={`/admin${link.href}`}
+                  className={cn('flex h-9 w-9 items-center justify-center rounded-lg transition-colors md:h-8 md:w-8', isActive(link.href) ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:text-foreground')}
                 >
                   <link.icon className="h-5 w-5" />
                   <span className="sr-only">{link.label}</span>
