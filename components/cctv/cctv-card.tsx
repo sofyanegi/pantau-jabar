@@ -9,7 +9,6 @@ import { CCTVVideo } from './cctv-video';
 import { getProxiedUrl } from '@/libs/getProxiedUrl';
 import { toast } from 'sonner';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 
 export default function CCTVCard({ cctv }: { cctv: CCTV }) {
   const { data: session } = useSession();
