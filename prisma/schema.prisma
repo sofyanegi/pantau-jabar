@@ -20,9 +20,47 @@ model User {
   password String?
   image    String?
 
-  role      Role?    @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role      Role?      @default(USER)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Favorite  Favorite[]
 
   @@map("users")
+}
+
+model City {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  cctvs     Cctv[]
+
+  @@map("cities")
+}
+
+model Cctv {
+  id        String     @id @default(cuid())
+  name      String
+  streamUrl String
+  lat       Float
+  lng       Float
+  cityId    String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  city      City       @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  Favorite  Favorite[]
+
+  @@map("cctvs")
+}
+
+model Favorite {
+  userId    String
+  cctvId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cctv Cctv @relation(fields: [cctvId], references: [id], onDelete: Cascade)
+
+  @@id([userId, cctvId])
+  @@map("favorites")
 }
