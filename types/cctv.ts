@@ -17,8 +17,8 @@ export const CCTVSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   cityId: z.string().min(1, 'City id is required'),
   streamUrl: z.string().min(1, 'Stream URL is required').url('Invalid URL format'),
-  lat: z.string().regex(/^[-+]?([1-8]?[0-9](\.[0-9]+)?|90(\.0+)?)/, 'Invalid latitude format'),
-  lng: z.string().regex(/^[-+]?((1[0-7][0-9]|[1-9]?[0-9])(\.[0-9]+)?|180(\.0+)?)/, 'Invalid longitude format'),
+  lat: z.number(),
+  lng: z.number(),
 });
 
 export type CCTVInput = z.infer<typeof CCTVSchema>;
