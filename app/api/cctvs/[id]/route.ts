@@ -9,7 +9,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   if (!cctv) {
     return NextResponse.json({ message: 'CCTV not found' }, { status: 404 });
   }
-  return NextResponse.json(cctv);
+  return NextResponse.json({ data: cctv });
 }
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -25,8 +25,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       data: {
         name,
         streamUrl,
-        lat: parseFloat(lat),
-        lng: parseFloat(lng),
+        lat: lat,
+        lng: lng,
         cityId,
       },
       include: { city: true },

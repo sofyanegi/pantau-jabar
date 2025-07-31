@@ -10,9 +10,6 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const city = await prisma.city.findUnique({
       where: { id },
       include: {
-        cctvs: {
-          orderBy: { name: 'asc' },
-        },
         _count: {
           select: { cctvs: true },
         },
@@ -23,7 +20,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ message: 'Kota tidak ditemukan' }, { status: 404 });
     }
 
-    return NextResponse.json({ city });
+    return NextResponse.json({ data: city });
   } catch (error) {
     return handleApiError(error);
   }

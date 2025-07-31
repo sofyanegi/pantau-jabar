@@ -5,7 +5,7 @@ import { authOptions } from '@/authOptions';
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
-
+  if (!session) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   try {
     const favorites = await prisma.favorite.findMany({
       where: { userId: session?.user.id },
