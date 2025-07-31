@@ -82,21 +82,19 @@ export default function DesktopNav() {
         </Link>
 
         <div className="flex items-center gap-2 bg-secondary/50 p-1 rounded-lg">
-          {navItems
-            .filter((item) => item.name !== 'Home')
-            .map(({ name, href, icon: Icon }) => {
-              const isActive = pathname === href || (href !== '/' && pathname.startsWith(href));
-              return (
-                <Link
-                  key={href}
-                  href={href}
-                  className={cn('transition-all duration-200 px-3 py-1.5 rounded-md flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary', isActive && 'text-primary font-semibold bg-background shadow-sm')}
-                >
-                  {Icon && <Icon className="w-4 h-4" />}
-                  <span>{name}</span>
-                </Link>
-              );
-            })}
+          {navItems.map(({ name, href, icon: Icon }) => {
+            const isActive = pathname === href || (href !== '/' && pathname.startsWith(href));
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={cn('transition-all duration-200 px-3 py-1.5 rounded-md flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary', isActive && 'text-primary font-semibold bg-background shadow-sm')}
+              >
+                {Icon && <Icon className="w-4 h-4" />}
+                <span>{name}</span>
+              </Link>
+            );
+          })}
         </div>
 
         <div className="flex items-center gap-3">
