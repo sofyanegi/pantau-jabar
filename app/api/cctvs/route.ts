@@ -60,8 +60,8 @@ export async function POST(request: NextRequest) {
       data: {
         name,
         streamUrl,
-        lat: parseFloat(lat),
-        lng: parseFloat(lng),
+        lat: lat,
+        lng: lng,
         cityId,
       },
       include: { city: true },
