@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { signIn } from 'next-auth/react';
 import { AlertCircle, Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -36,7 +35,6 @@ export default function RegisterPage() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [isCredentialsLoading, setIsCredentialsLoading] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   // Initialize React Hook Form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -82,13 +80,7 @@ export default function RegisterPage() {
     }
   }
 
-  // Function to handle Google sign-in
-  async function handleGoogleSignIn() {
-    setIsGoogleLoading(true);
-    await signIn('google', { callbackUrl: '/' });
-  }
-
-  const isLoading = isCredentialsLoading || isGoogleLoading;
+  const isLoading = isCredentialsLoading;
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background p-4">

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -14,8 +14,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import Image from 'next/image';
 import LoginGoogle from '@/components/custom/login-google';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
   email: z.string().email({
@@ -30,7 +30,8 @@ export default function LoginPage() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [isCredentialsLoading, setIsCredentialsLoading] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const error = searchParams.get('error');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,18 +66,13 @@ export default function LoginPage() {
     }
   }
 
-  async function handleGoogleSignIn() {
-    setIsGoogleLoading(true);
-    try {
-      await signIn('google', { callbackUrl: '/' });
-    } catch (error) {
-      console.error('Google sign-in error:', error);
-      setServerError('Could not sign in with Google. Please try again.');
-      setIsGoogleLoading(false);
-    }
-  }
+  const isLoading = isCredentialsLoading;
 
-  const isLoading = isCredentialsLoading || isGoogleLoading;
+  useEffect(() => {
+    if (error === 'unauthorized') {
+      toast.error('Anda harus login untuk mengakses halaman ini');
+    }
+  }, [error]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background p-4">
