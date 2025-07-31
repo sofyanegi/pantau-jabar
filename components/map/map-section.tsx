@@ -9,7 +9,6 @@ import 'leaflet/dist/leaflet.css';
 import 'react-leaflet-markercluster/styles';
 import { CCTV } from '@/types/cctv';
 import { Skeleton } from '../ui/skeleton';
-import { CCTVFilterSearch } from '../cctv/cctv-filter-search';
 
 const CCTVCard = dynamic(() => import('@/components/cctv/cctv-card'), { ssr: false });
 
